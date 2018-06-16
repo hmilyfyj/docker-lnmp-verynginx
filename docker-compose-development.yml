@@ -1,0 +1,32 @@
+# web server
+nginx:
+  # image: nginx:latest
+  image: registry.cn-hangzhou.aliyuncs.com/shanjing/verynginx
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - ./nginx/nginx-verynginx.conf:/etc/nginx/conf/nginx.conf:rw
+    - ./home/wwwroot:/home/wwwroot
+    - ./nginx/conf.d/:/etc/nginx/conf/conf.d/:ro
+  links:
+    - php-fpm70:__DOCKER_PHP_FPM__
+    - php-fpm70:__DOCKER_PHP_FPM_70__
+    - php-fpm56:__DOCKER_PHP_FPM_56__
+  restart: always
+
+php-fpm70:
+  image: registry.cn-hangzhou.aliyuncs.com/shanjing/php-fpm70
+  ports:
+    - "9000"
+  volumes:
+    - ./home/wwwroot:/home/wwwroot
+  restart: always
+
+php-fpm56:
+  image: registry.cn-hangzhou.aliyuncs.com/shanjing/php-fpm56
+  ports:
+    - "9000"
+  volumes:
+    - ./home/wwwroot:/home/wwwroot
+  restart: always
